@@ -41,5 +41,5 @@ const port = process.env.PORT || 9000;
 mongodbConnect();
 
 app.listen(port, () => {
-  console.log(`Le server tourne sur le port: http://localhost:${port}`);
+  console.log(`Le server tourne sur le port:${port}`);
 });
