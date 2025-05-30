@@ -4,4 +4,3 @@ routes
 services
 .env
 paypal.js
-server.js
