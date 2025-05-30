@@ -1,6 +1,5 @@
 node_modules/
 controllers
-node_modules
 middleware
 routes
 services
