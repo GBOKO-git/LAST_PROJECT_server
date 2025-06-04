@@ -42,7 +42,7 @@ const register = async (req, res) => {
 
         // **ÉTAPE CLÉ 2 : Définir la logique pour 'estValide' basée sur le rôle.**
         // Par défaut, un nouvel inscrit est considéré valide (actif).
-        let estValideStatus = true; 
+        let estValideStatus = false; 
 
         // Si le rôle choisi est 'member', alors il n'est pas validé initialement.
         // C'est le seul rôle qui nécessite une validation administrative.
@@ -247,7 +247,19 @@ const getAllMembers = async (req, res) => {
     try {
         // Renvoie tous les utilisateurs, quel que soit leur rôle
         // Si vous voulez filtrer spécifiquement pour les 'member', ajustez la requête:
-        // const members = await User.find({ role: 'member' }).select('-password');
+        const members = await User.find({ role: 'member' }).select('-password');
+        // const members = await User.find().select('-password'); 
+        res.json({ success: true, count: members.length, members });
+    } catch (error) {
+        console.error('Erreur lors de la récupération de tous les membres/utilisateurs:', error);
+        res.status(400).json({ success: false, message: error.message || "Une erreur est survenue lors de la récupération des membres." });
+    }
+};
+
+// --- Fonction pour obtenir tous les membres (ou utilisateurs) ---
+const getAllUsers = async (req, res) => {
+    try {
+        // Renvoie tous les utilisateurs, quel que soit leur rôle
         const members = await User.find().select('-password'); 
         res.json({ success: true, count: members.length, members });
     } catch (error) {
@@ -343,4 +355,5 @@ module.exports = {
     getAdminStats,
     getUnvalidatedMembers,
     rejectMember,
+    getAllUsers,
 };
