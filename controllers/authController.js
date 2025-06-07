@@ -271,27 +271,34 @@ const getProfile = async (req, res) => {
 // --- Fonction pour mettre à jour le profil utilisateur ---
 const updateProfile = async (req, res) => {
   try {
-    const { nom, prenom, telephone, adresse } = req.body;
+    const { nom, prenom, telephone, adresse, photo, cv, job } = req.body;
 
-    // Trouver l'utilisateur par son ID (req.user._id vient du token)
     const user = await User.findById(req.user._id);
-
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "Utilisateur non trouvé." });
     }
 
-    // Mettre à jour les champs si fournis dans la requête
+    // Mise à jour conditionnelle
     if (nom) user.nom = nom;
     if (prenom) user.prenom = prenom;
     if (telephone) user.telephone = telephone;
-    if (adresse) user.adresse = adresse; // Prend en charge l'objet adresse directement
+    if (photo) user.photo = photo;
+    if (cv) user.cv = cv;
+    if (job) user.job = job;
 
-    // Sauvegarder les modifications
+    if (adresse && typeof adresse === "object") {
+      user.adresse = {
+        rue: adresse.rue || user.adresse?.rue,
+        ville: adresse.ville || user.adresse?.ville,
+        codePostal: adresse.codePostal || user.adresse?.codePostal,
+        pays: adresse.pays || user.adresse?.pays,
+      };
+    }
+
     await user.save();
 
-    // Répondre avec le profil mis à jour
     res.json({
       success: true,
       message: "Profil mis à jour avec succès",
@@ -301,6 +308,9 @@ const updateProfile = async (req, res) => {
         prenom: user.prenom,
         email: user.email,
         telephone: user.telephone,
+        photo: user.photo,
+        cv: user.cv,
+        job: user.job,
         adresse: user.adresse,
         role: user.role,
         estValide: user.estValide,
@@ -310,26 +320,23 @@ const updateProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Erreur lors de la mise à jour du profil:", error);
-    // Gestion des erreurs de validation (ex: numéro de téléphone invalide si vous en avez)
+
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((val) => val.message);
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: `Erreur de validation: ${messages.join(", ")}`,
-        });
-    }
-    res
-      .status(400)
-      .json({
+      return res.status(400).json({
         success: false,
-        message:
-          error.message ||
-          "Une erreur est survenue lors de la mise à jour du profil.",
+        message: `Erreur de validation: ${messages.join(", ")}`,
       });
+    }
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message || "Une erreur est survenue lors de la mise à jour.",
+    });
   }
 };
+
 
 // --- Fonction pour valider un membre en attente (par un admin) ---
 const validateMember = async (req, res) => {

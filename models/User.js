@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["user", "member", "admin", "donateur"],
-      default: "user"
+      default: "user",
     },
     telephone: {
       type: String,
@@ -48,6 +48,19 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    cv: {
+      type: String,
+      trim: true,
+    },
+    job: {
+      type: String,
+      trim: true,
+    },
+    photo: {
+      type: String,
+      trim: true,
+    },
+
     isAdmin: {
       type: Boolean,
       default: false,
@@ -75,6 +88,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
   },
+
   {
     timestamps: true,
   }
