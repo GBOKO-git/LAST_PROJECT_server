@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 // CHANGEMENT 1 : Importez la nouvelle fonction du contrôleur
 // Vous devrez créer ou adapter la fonction 'getUnvalidatedMembers' dans authController.js
-const { register, login, getProfile, updateProfile, validateMember, getAllMembers, getAdminStats, getUnvalidatedMembers, rejectMember } = require('../controllers/authController'); // AJOUTEZ 'getUnvalidatedMembers' ici
+const { register, login, getProfile, updateProfile, validateMember, getAllMembers, getAdminStats, getUnvalidatedMembers, rejectMember, submitMembershipRequest } = require('../controllers/authController'); // AJOUTEZ 'getUnvalidatedMembers' ici
 const { protect, authorize } = require('../middleware/auth');
 
 // Routes publiques
@@ -14,6 +14,8 @@ router.post('/login', login);
 // Routes protégées (utilisateur connecté)
 router.get('/profile', protect, getProfile);
 router.put('/profile', protect, updateProfile);
+// demande membre
+router.post('/request', protect, submitMembershipRequest);
 
 // Routes admin (nécessitent d'être admin pour y accéder)
 router.put('/validate/:userId', protect, authorize('admin'), validateMember);
