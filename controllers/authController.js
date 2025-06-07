@@ -43,11 +43,12 @@ const register = async (req, res) => {
     // **ÉTAPE CLÉ 2 : Définir la logique pour 'estValide' basée sur le rôle.**
     // Par défaut, un nouvel inscrit est considéré valide (actif).
     let estValideStatus = false;
-
+   
     // Si le rôle choisi est 'member', alors il n'est pas validé initialement.
     // C'est le seul rôle qui nécessite une validation administrative.
     if (role === "member") {
       estValideStatus = false;
+      
     }
 
     // **ÉTAPE CLÉ 3 : Créer l'utilisateur avec le rôle exact et le statut de validation déterminé.**
@@ -57,7 +58,7 @@ const register = async (req, res) => {
       email,
       password,
       telephone,
-      role: role, // Utilise le rôle EXACT envoyé par le frontend
+      role,     //  Utilise le rôle EXACT envoyé par le frontend
       estValide: estValideStatus, // Applique la logique conditionnelle
     });
 
