@@ -14,6 +14,7 @@ const paypalRoutes = require("./routes/paypalRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const donorRoutes = require("./routes/donorRoutes");
 const mongodbConnect = require("./config/config");
+const imageRoutes = require("./routes/imageRoutes")
 
 // Routes
 app.get("/", (req, res) => {
@@ -27,14 +28,8 @@ app.use("/api/paypal", paypalRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/donors", donorRoutes);
 
-// Gestion des erreurs
-// app.use((err, req, res, next) => {
-//     console.error(err.stack);
-//     res.status(500).json({
-//         success: false,
-//         message: 'Une erreur est survenue sur le serveur'
-//     });
-// });
+// Utilisation des routes pour les images
+app.use("/api/images", imageRoutes);
 
 const port = process.env.PORT || 9000;
 

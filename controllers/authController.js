@@ -561,6 +561,33 @@ const rejectMember = async (req, res) => {
   }
 };
 
+const updateProfilePhoto = async (req, res) => {
+  try {
+    const userId = req.user._id; // supposant que tu as middleware auth pour récupérer l'user connecté
+    const { photo } = req.body; // photo est ici une URL (string)
+
+    if (!photo) {
+      return res.status(400).json({ error: "Aucune URL de photo fournie" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { photo },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+
+    res.json({ message: "Photo de profil mise à jour", user });
+  } catch (error) {
+    console.error("Erreur updateProfilePhoto:", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
+
 // --- Exportation de toutes les fonctions du contrôleur en un seul objet ---
 module.exports = {
   register,
@@ -574,4 +601,5 @@ module.exports = {
   rejectMember,
   getAllUsers,
 submitMembershipRequest,
+updateProfilePhoto
 };
