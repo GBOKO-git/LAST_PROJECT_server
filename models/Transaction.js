@@ -23,7 +23,7 @@ const transactionSchema = new mongoose.Schema({
     },
     methodePaiement: {
         type: String,
-    enum: ['paypal', 'carte', 'virement', 'mobile'],  // Ajout de 'mobile'
+    enum: ['paypal', 'card', 'mobile'],  // Ajout de 'mobile'
         required: true
     },
     reference: {
