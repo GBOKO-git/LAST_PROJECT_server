@@ -15,6 +15,9 @@ const eventRoutes = require("./routes/eventRoutes");
 const donorRoutes = require("./routes/donorRoutes");
 const mongodbConnect = require("./config/config");
 const imageRoutes = require("./routes/imageRoutes")
+const cinetPayroutes = require("./routes/cinetPayRoutes")
+const paymentRoutes = require("./routes/paymentRoutes")
+
 
 // Routes
 app.get("/", (req, res) => {
@@ -30,6 +33,15 @@ app.use("/api/donors", donorRoutes);
 
 // Utilisation des routes pour les images
 app.use("/api/images", imageRoutes);
+
+// route pour le paiement strype
+app.use("/api/payment", paymentRoutes);
+
+// route pour le paiement cinetPay
+app.use("/api/cinetPay", cinetPayroutes);
+
+// route pour le paiement strype
+// app.use("/api/strype", paymentRoutes);
 
 const port = process.env.PORT || 9000;
 

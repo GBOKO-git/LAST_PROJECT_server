@@ -59,7 +59,6 @@ const donorSchema = new mongoose.Schema({
 });
 
 // Index pour la recherche
-donorSchema.index({ email: 1 });
 donorSchema.index({ typedonateur: 1 });
 donorSchema.index({ 'dernierDon.date': -1 });
 
